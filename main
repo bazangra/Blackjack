@@ -1,0 +1,125 @@
+import os
+import random
+from art import logo
+
+pack_of_cards = [11, 2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 10]
+
+def calculate(hand):
+  total_score = 0
+  for card in hand:
+    total_score = total_score + card
+  if total_score > 21:
+    for card in hand:
+      if total_score > 21 and card == 11:
+        total_score = total_score - 10
+  if total_score == 21:
+    total_score = 0
+  return total_score
+
+def calculatec(hand):
+  total_score = 0
+  for card in hand:
+    total_score = total_score + card
+  if total_score == 21:
+    total_score = 0
+  return total_score
+
+def blackjack():
+  print(logo)
+  cont = True
+
+  player_card1 = int(random.choice(pack_of_cards))
+  player_hand = [player_card1]
+  computer_card1 = int(random.choice(pack_of_cards))
+  computer_hand = [computer_card1]
+  
+  player_card = int(random.choice(pack_of_cards))
+  player_hand.append(player_card)
+  player_score = calculate(player_hand)
+ 
+  print(f"Your cards: {player_hand}, current score: {player_score} ")
+
+  computer_loop = True
+  computer_score = 0
+  while computer_loop:
+    if computer_score < 17:
+      computer_card = int(random.choice(pack_of_cards))
+      computer_hand.append(computer_card)
+      computer_score = calculatec(computer_hand)
+    elif computer_score > 16:
+      computer_loop = False
+  print(f"Computer's first card: {computer_card1}")
+
+  while cont:
+    if player_score == 0 and computer_score != 0:
+      print(f"Your final hand: {player_hand}, final score: {player_score}")
+      print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+      print("Win with a Blackjack :)")
+      cont = False
+    if player_score == 0 and computer_score == 0:
+      print(f"Your final hand: {player_hand}, final score: {player_score}")
+      print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+      print("You drew")
+      cont = False
+    elif player_score > 21:
+      print(f"Your final hand: {player_hand}, final score: {player_score}")
+      print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+      print("You went over. You lose :(")
+      cont = False
+    elif player_score < 21:
+      draw = input("Type 'y' to get another card, type 'n' to pass: ")
+      if draw == "y":
+        player_card = int(random.choice(pack_of_cards))
+        player_hand.append(player_card)
+        player_score = calculate(player_hand)
+        if player_score < 21:
+          print(f"Your cards: {player_hand}, current score: {player_score} ")
+          print(f"Computer's first card: {computer_card1}")
+          draw = ()
+        elif player_score > 21:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"You went over. You lose :(")
+          cont = False
+        elif player_score == 0 and computer_score == 0:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"You drew!")
+          cont = False
+        elif player_score == 0 and computer_score != 0:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"You win!")
+          cont = False
+      if draw == "n":
+        if computer_score == 0 and player_score != 0:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"Your opponent has Blackjack. You lose :(")
+          cont = False
+        elif player_score > computer_score:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"You win :)")
+          cont = False
+        elif computer_score > player_score and computer_score < 21:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"You lose :(")
+          cont = False
+        elif computer_score > 21:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"You win :)")
+          cont = False
+        elif computer_score == player_score:
+          print(f"Your final hand: {player_hand}, final score: {player_score}")
+          print(f"Computer's final hand: {computer_hand}, final score: {computer_score}")
+          print(f"You drew")
+          cont = False
+
+play = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ")
+while play == "y":
+  os.system('clear')
+  blackjack()
+  play = input("Do you want to play a game of Blackjack? Type 'y' or 'n': ")
